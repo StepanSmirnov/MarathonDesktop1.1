@@ -16,7 +16,7 @@ namespace MarathonDesktop
         public ProfilEdit(string email)
         {
             InitializeComponent();
-            SqlConnection conn = new SqlConnection("server=DESKTOP-FHVMNUE;Trusted_Connection=yes;database=marathon;connection timeout=30");
+            SqlConnection conn = new SqlConnection("server=(localdb)\\MSSQLLocalDB;Trusted_Connection=yes;database=marathon;connection timeout=30");
             conn.Open();
             SqlCommand comm1 = new SqlCommand("select * from [country]", conn);
             SqlDataReader reader1 = comm1.ExecuteReader();
@@ -96,7 +96,7 @@ namespace MarathonDesktop
                 MessageBox.Show("Заполните все поля"); return;
             }
 
-            SqlConnection conn = new SqlConnection("server=DESKTOP-FHVMNUE;Trusted_Connection=yes;database=marathon;connection timeout=30");
+            SqlConnection conn = new SqlConnection("server=(localdb)\\MSSQLLocalDB;Trusted_Connection=yes;database=marathon;connection timeout=30");
             conn.Open();
             SqlCommand comm = new SqlCommand("UPDATE [User] SET FirstName='" + textBox1.Text + "',LastName='" + textBox2.Text + "' where Email='" + label11.Text + "'", conn);
             comm.ExecuteNonQuery();

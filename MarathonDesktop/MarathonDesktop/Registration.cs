@@ -17,7 +17,7 @@ namespace MarathonDesktop
         public Registration()
         {
             InitializeComponent();
-            SqlConnection conn = new SqlConnection("server=DESKTOP-FHVMNUE;Trusted_Connection=yes;database=marathon;connection timeout=30");
+            SqlConnection conn = new SqlConnection("server=(localdb)\\MSSQLLocalDB;Trusted_Connection=yes;database=marathon;connection timeout=30");
             conn.Open();
             SqlCommand comm = new SqlCommand("select * from [country]",conn);
             SqlDataReader reader = comm.ExecuteReader();
@@ -114,7 +114,7 @@ namespace MarathonDesktop
 
             if (password)
             {
-                SqlConnection conn = new SqlConnection("server=DESKTOP-FHVMNUE;Trusted_Connection=yes;database=marathon;connection timeout=30");
+                SqlConnection conn = new SqlConnection("server=(localdb)\\MSSQLLocalDB;Trusted_Connection=yes;database=marathon;connection timeout=30");
                 conn.Open();
                 SqlCommand comm = new SqlCommand("INSERT INTO [user]([Email],[Password],[FirstName],[LastName],[RoleId]) VALUES ('"+textBox5.Text+"','" +
                     pass1+"','"+textBox1.Text+"','"+textBox2.Text+"','R')",conn);

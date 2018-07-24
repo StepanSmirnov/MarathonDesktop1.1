@@ -48,7 +48,7 @@ namespace MarathonDesktop
         {
             try
             {
-                SqlConnection conn = new SqlConnection("server=DESKTOP-FHVMNUE;Trusted_Connection=yes;database=marathon;connection timeout=30");
+                SqlConnection conn = new SqlConnection("server=(localdb)\\MSSQLLocalDB;Trusted_Connection=yes;database=marathon;connection timeout=30");
                 conn.Open();
                 string mail = textBox1.Text;
                 SqlCommand comm = new SqlCommand("SELECT * FROM [dbo].[User] where Email='" + mail+"'", conn);

@@ -27,7 +27,7 @@ namespace MarathonDesktop
            
             dgv.Columns.Add(textCol);
 
-            SqlConnection conn = new SqlConnection("server=DESKTOP-FHVMNUE;Trusted_Connection=yes;database=marathon;");
+            SqlConnection conn = new SqlConnection("server=(localdb)\\MSSQLLocalDB;Trusted_Connection=yes;database=marathon;");
             conn.Open();
             SqlCommand comm = new SqlCommand("select * from [charity]",conn);
             SqlDataReader reader = comm.ExecuteReader();

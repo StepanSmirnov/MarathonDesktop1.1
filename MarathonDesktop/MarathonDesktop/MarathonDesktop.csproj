@@ -69,6 +69,11 @@
     <Compile Include="CoordinatorMenu.Designer.cs">
       <DependentUpon>CoordinatorMenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="marathonDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>marathonDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="MySponsors.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -155,6 +160,17 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="marathonDataSet.xsc">
+      <DependentUpon>marathonDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="marathonDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>marathonDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="marathonDataSet.xss">
+      <DependentUpon>marathonDataSet.xsd</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

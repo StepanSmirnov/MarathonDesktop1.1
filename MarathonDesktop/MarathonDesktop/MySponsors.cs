@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MarathonDesktop.marathonDataSetTableAdapters;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -25,31 +26,36 @@ namespace MarathonDesktop
             listView1.Columns[1].Width = -1;
 
             listView1.View = View.Details;
-
-            SqlConnection conn = new SqlConnection("server=DESKTOP-FHVMNUE;database=marathon;Trusted_Connection=yes;");
-            conn.Open();
-            SqlCommand comm = new SqlCommand("select [Registration].[CharityId],[Charity].[CharityDescription],[Charity].CharityName,[Sponsorship].SponsorName, " +
-                "[Charity].CharityLogo,[Sponsorship].Amount,[Sponsorship].RegistrationId,[Registration].[RegistrationId],[Runner].RunnerId,[User].Email " +
-                "FROM [User] inner join [Runner] ON [User].Email=[Runner].Email inner join [Registration] on [Registration].RunnerId=[Runner].RunnerId " +
-                "inner join [Sponsorship] on [Sponsorship].RegistrationId = [Registration].RegistrationId inner join [Charity] " +
-                " on [Charity].CharityId=[Registration].CharityId WHERE [User].Email='" + mail+"'",conn);
-            SqlDataReader reader = comm.ExecuteReader();
-
-            string desc = "", logo = "", name = "";      
-            int sum = 0;
-            while (reader.Read())
+            var ds = new marathonDataSet();
+            new UserTableAdapter().Fill(ds.User);
+            new RunnerTableAdapter().Fill(ds.Runner);
+            new RegistrationTableAdapter().Fill(ds.Registration);
+            new CharityTableAdapter().Fill(ds.Charity);
+            new SponsorshipTableAdapter().Fill(ds.Sponsorship);
+            var registration = (from reg in ds.Registration
+                                from runner in ds.Runner
+                                where runner.Email == mail && reg.RunnerId == runner.RunnerId
+                                select reg).SingleOrDefault();
+            var charity = (from ch in ds.Charity where ch.CharityId == registration.CharityId select ch).SingleOrDefault();
+            var sponsors = (from sponsor in ds.Sponsorship where sponsor.RegistrationId == registration.RegistrationId select sponsor);
+            foreach (var d in sponsors)
             {
-
-                // pictureBox1.Image = Image.FromFile(reader["CharityLogo"].ToString());
-                // label4.Text = reader["CharityDescription"].ToString();
-                name = reader["CharityName"].ToString();
-                desc= reader["CharityDescription"].ToString();
-                logo= reader["CharityLogo"].ToString();
-                ListViewItem lvi = new ListViewItem(reader["SponsorName"].ToString());
-                lvi.SubItems.Add(reader["Amount"].ToString());
+                ListViewItem lvi = new ListViewItem(d.SponsorName);
+                lvi.SubItems.Add(d.Amount.ToString());
                 listView1.Items.Add(lvi);
-                sum += Convert.ToInt32(reader["Amount"]);
             }
+            //string desc = "", logo = "", name = "";      
+            //int sum = 0;
+            //while (reader.Read())
+            //{
+
+            //    // pictureBox1.Image = Image.FromFile(reader["CharityLogo"].ToString());
+            //    // label4.Text = reader["CharityDescription"].ToString();
+            //    ListViewItem lvi = new ListViewItem(reader["SponsorName"].ToString());
+            //    lvi.SubItems.Add(reader["Amount"].ToString());
+            //    listView1.Items.Add(lvi);
+            //    sum += Convert.ToInt32(reader["Amount"]);
+            //}
 
             /* Image img = Image.FromFile(logo);
              listView2.View = View.LargeIcon;
@@ -70,13 +76,15 @@ namespace MarathonDesktop
              ListViewItem listItem = new ListViewItem("ВСЕГО");
              listItem.SubItems.Add(sum.ToString());
              listView1.Items.Add(listItem);*/
+            if (charity != null)
+            {
+                label4.Text = charity.CharityName;
+                label5.Text = charity.CharityDescription;
+                pictureBox1.Image = Image.FromFile(charity.CharityLogo);
+                label5.Height = 150 + label5.Text.Length / 2;
+            }
 
-            label4.Text = name;
-            label5.Text = desc;
-            pictureBox1.Image = Image.FromFile(logo);
-            label5.Height = 150+ desc.Length / 2;
-
-            conn.Close();
+            //conn.Close();
         }
 
         private void button1_Click(object sender, EventArgs e)
