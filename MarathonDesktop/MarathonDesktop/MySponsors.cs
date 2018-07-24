@@ -36,6 +36,7 @@ namespace MarathonDesktop
                                 from runner in ds.Runner
                                 where runner.Email == mail && reg.RunnerId == runner.RunnerId
                                 select reg).SingleOrDefault();
+            if (registration == null) return;
             var charity = (from ch in ds.Charity where ch.CharityId == registration.CharityId select ch).SingleOrDefault();
             var sponsors = (from sponsor in ds.Sponsorship where sponsor.RegistrationId == registration.RegistrationId select sponsor);
             foreach (var d in sponsors)
